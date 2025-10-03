@@ -1,7 +1,8 @@
 {
   "name": "Dreamhome Calculator",
   "short_name": "Dreamhome",
-  "start_url": "/index.html",
+  "scope": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#f5f7f8",
   "theme_color": "#359EFF",
