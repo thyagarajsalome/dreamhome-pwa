@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </a>
                 </div>`,
       houseConstruction: `
-                <main>
+                
                     <header style="text-align: center; margin-bottom: 2rem;"><h1>House Construction Cost Estimator</h1></header>
                     <div class="step-navigation">
                       <button id="step-btn-1" class="step-btn active">1. Area Details</button>
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate Budget</button>
                       </div>
                     </form>
-                </main>
+                
                 <section id="results" class="hidden"></section>`,
       painting: `
                 <main>
