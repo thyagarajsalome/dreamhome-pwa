@@ -4,12 +4,10 @@ const urlsToCache = [
   "/index.html",
   "/css/style.css",
   "/js/app.js",
-  "/images/icon-192.png",
-  "/images/icon-512.png",
-  "https://cdn.tailwindcss.com?plugins=forms,container-queries",
+  "/images/icon-192x192.png", // Corrected filename
+  "/images/icon-512x512.png", // Corrected filename
   "https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap",
   "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined",
-  // Add these two lines to the urlsToCache array in sw.js
   "https://cdn.jsdelivr.net/npm/chart.js",
   "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
 ];
