@@ -1,15 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   const appContainer = document.getElementById("app-container");
-  const mainNav = document.querySelector("footer");
-
-  // --- New UI Elements ---
-  const overlay = document.getElementById("app-overlay");
-  const sidebar = document.getElementById("sidebar");
-  const settingsPanel = document.getElementById("settings-panel");
-  const menuBtn = document.getElementById("menu-btn");
-  const settingsBtn = document.getElementById("settings-btn");
-  const closeSidebarBtn = document.getElementById("close-sidebar-btn");
-  const closeSettingsBtn = document.getElementById("close-settings-btn");
 
   const app = {
     templates: {
@@ -2522,9 +2512,6 @@ document.addEventListener("DOMContentLoaded", () => {
           this.calculators[pageName].init();
         }
         this.updateNav(pageName);
-        if (pageName === "home") {
-          this.addCalculatorLinkListeners();
-        }
       } else {
         fetch(`/${pageName}.html`)
           .then((response) =>
@@ -2541,41 +2528,24 @@ document.addEventListener("DOMContentLoaded", () => {
             appContainer.innerHTML = `<p>Error: Page not found.</p>`;
           });
       }
-      // Close any open panels on navigation
-      this.closeAllPanels();
     },
     updateNav: function (pageName) {
       document.querySelectorAll(".nav-btn").forEach((btn) => {
         btn.classList.toggle("active", btn.dataset.page === pageName);
       });
     },
-    addCalculatorLinkListeners: function () {
-      document.querySelectorAll(".calculator-link").forEach((link) => {
-        link.addEventListener("click", (e) => {
+    init: function () {
+      document.body.addEventListener("click", (e) => {
+        const navLink = e.target.closest(".nav-btn, .calculator-link");
+        if (navLink && navLink.dataset.page) {
           e.preventDefault();
-          this.loadView(e.currentTarget.dataset.page);
-        });
+          this.loadView(navLink.dataset.page);
+        }
       });
+      // Initial load
+      this.loadView("home");
     },
   };
 
-  mainNav.addEventListener("click", (e) => {
-    const navBtn = e.target.closest(".nav-btn");
-    if (navBtn) {
-      e.preventDefault();
-      const page = navBtn.dataset.page;
-      app.loadView(page);
-    }
-  });
-
-  // Add listeners for back buttons on calculator pages
-  document.addEventListener("click", function (event) {
-    if (event.target.matches(".back-button")) {
-      event.preventDefault();
-      app.loadView("home");
-    }
-  });
-
-  // Initial load
-  app.loadView("home");
+  app.init();
 });
