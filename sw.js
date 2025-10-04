@@ -1,11 +1,16 @@
-const CACHE_NAME = "dreamhome-calculator-cache-v1";
+// thyagarajsalome/dreamhome-pwa/dreamhome-pwa-e228f9cbd28c01dc658af560316564e882e1d39f/sw.js
+const CACHE_NAME = "dreamhome-calculator-cache-v2"; // Incremented version
 const urlsToCache = [
   "/",
   "/index.html",
+  "/about.html",
+  "/faq.html",
+  "/privacy.html",
+  "/terms.html",
   "/css/style.css",
   "/js/app.js",
-  "/images/icon-192x192.png", // Corrected filename
-  "/images/icon-512x512.png", // Corrected filename
+  "/images/icon-192x192.png",
+  "/images/icon-512x512.png",
   "https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap",
   "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined",
   "https://cdn.jsdelivr.net/npm/chart.js",
@@ -27,7 +32,7 @@ self.addEventListener("fetch", (event) => {
       if (response) {
         return response;
       }
-      return fetch(event.request);
+      return fetch(event.request).catch(() => caches.match("/index.html")); // Fallback to home page if network fails
     })
   );
 });

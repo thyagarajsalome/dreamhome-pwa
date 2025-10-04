@@ -2,325 +2,322 @@ document.addEventListener("DOMContentLoaded", () => {
   const appContainer = document.getElementById("app-container");
   const mainNav = document.querySelector("footer");
 
+  // --- New UI Elements ---
+  const overlay = document.getElementById("app-overlay");
+  const sidebar = document.getElementById("sidebar");
+  const settingsPanel = document.getElementById("settings-panel");
+  const menuBtn = document.getElementById("menu-btn");
+  const settingsBtn = document.getElementById("settings-btn");
+  const closeSidebarBtn = document.getElementById("close-sidebar-btn");
+  const closeSettingsBtn = document.getElementById("close-settings-btn");
+
   const app = {
     templates: {
       home: `
-                <div class="mb-6">
-                    <h2 class="text-3xl font-bold">Welcome!</h2>
-                    <p class="text-muted-light dark:text-muted-dark">Select a category to start calculating.</p>
+                <div class="welcome-header">
+                    <h2>Welcome!</h2>
+                    <p>Select a category to start calculating.</p>
                 </div>
-                <h3 class="text-xl font-semibold mb-4">Calculator Categories</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    <a class="calculator-link group flex flex-col items-center justify-center p-4 bg-card-light dark:bg-card-dark rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200" href="#" data-page="houseConstruction">
-                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-3"><span class="material-symbols-outlined text-primary text-3xl">home</span></div>
-                        <p class="font-semibold text-center text-sm">House Construction</p>
+                <h3 class="categories-title">Calculator Categories</h3>
+                <div class="calculator-grid">
+                    <a class="category-card calculator-link" href="#" data-page="houseConstruction">
+                        <div class="icon-wrapper"><span class="material-symbols-outlined">home</span></div>
+                        <p>House Construction</p>
                     </a>
-                    <a class="calculator-link group flex flex-col items-center justify-center p-4 bg-card-light dark:bg-card-dark rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200" href="#" data-page="electrical">
-                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-3"><span class="material-symbols-outlined text-primary text-3xl">electrical_services</span></div>
-                        <p class="font-semibold text-center text-sm">Electrical</p>
+                    <a class="category-card calculator-link" href="#" data-page="electrical">
+                        <div class="icon-wrapper"><span class="material-symbols-outlined">electrical_services</span></div>
+                        <p>Electrical</p>
                     </a>
-                    <a class="calculator-link group flex flex-col items-center justify-center p-4 bg-card-light dark:bg-card-dark rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200" href="#" data-page="plumbing">
-                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-3"><span class="material-symbols-outlined text-primary text-3xl">plumbing</span></div>
-                        <p class="font-semibold text-center text-sm">Plumbing</p>
+                    <a class="category-card calculator-link" href="#" data-page="plumbing">
+                        <div class="icon-wrapper"><span class="material-symbols-outlined">plumbing</span></div>
+                        <p>Plumbing</p>
                     </a>
-                    <a class="calculator-link group flex flex-col items-center justify-center p-4 bg-card-light dark:bg-card-dark rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200" href="#" data-page="flooring">
-                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-3"><span class="material-symbols-outlined text-primary text-3xl">square_foot</span></div>
-                        <p class="font-semibold text-center text-sm">Flooring</p>
+                    <a class="category-card calculator-link" href="#" data-page="flooring">
+                        <div class="icon-wrapper"><span class="material-symbols-outlined">square_foot</span></div>
+                        <p>Flooring</p>
                     </a>
-                    <a class="calculator-link group flex flex-col items-center justify-center p-4 bg-card-light dark:bg-card-dark rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200" href="#" data-page="painting">
-                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-3"><span class="material-symbols-outlined text-primary text-3xl">format_paint</span></div>
-                        <p class="font-semibold text-center text-sm">Painting</p>
+                    <a class="category-card calculator-link" href="#" data-page="painting">
+                        <div class="icon-wrapper"><span class="material-symbols-outlined">format_paint</span></div>
+                        <p>Painting</p>
                     </a>
-                    <a class="calculator-link group flex flex-col items-center justify-center p-4 bg-card-light dark:bg-card-dark rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200" href="#" data-page="doorsAndWindows">
-                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-3"><span class="material-symbols-outlined text-primary text-3xl">door_front</span></div>
-                        <p class="font-semibold text-center text-sm">Doors & Windows</p>
+                    <a class="category-card calculator-link" href="#" data-page="doorsAndWindows">
+                        <div class="icon-wrapper"><span class="material-symbols-outlined">door_front</span></div>
+                        <p>Doors & Windows</p>
                     </a>
                 </div>`,
       houseConstruction: `
-                
-                    <header style="text-align: center; margin-bottom: 2rem;"><h1>House Construction Cost Estimator</h1></header>
-                    <div class="step-navigation">
-                      <button id="step-btn-1" class="step-btn active">1. Area Details</button>
-                      <button id="step-btn-2" class="step-btn">2. Construction Quality</button>
-                      <button id="step-btn-3" class="step-btn">3. Other Costs</button>
+                <div class="calculator-header"><h1>House Construction Cost Estimator</h1></div>
+                <form id="constructionForm">
+                  <div class="step-navigation">
+                    <button id="step-btn-1" class="step-btn active">1. Area</button>
+                    <button id="step-btn-2" class="step-btn">2. Quality</button>
+                    <button id="step-btn-3" class="step-btn">3. Other</button>
+                  </div>
+                  <div id="step-1" class="step active">
+                    <h2>Plot & Built-up Area</h2><p>Enter the total plot area and the desired built-up area for your house.</p>
+                    <div class="form-grid">
+                      <div><label for="plotArea">Plot Area (sq.ft.)</label><input type="number" id="plotArea" value="1200" /></div>
+                      <div><label for="builtUpArea">Total Built-up Area (sq.ft.)</label><input type="number" id="builtUpArea" value="2000" /></div>
+                      <div><label for="numFloors">Number of Floors</label><input type="number" id="numFloors" value="2" /></div>
                     </div>
-                    <form id="constructionForm">
-                      <div id="step-1" class="step active">
-                        <h2>Plot & Built-up Area</h2><p>Enter the total plot area and the desired built-up area for your house.</p>
-                        <div class="form-grid">
-                          <div><label for="plotArea">Plot Area (sq.ft.)</label><input type="number" id="plotArea" value="1200" /></div>
-                          <div><label for="builtUpArea">Total Built-up Area (sq.ft.)</label><input type="number" id="builtUpArea" value="2000" /></div>
-                          <div><label for="numFloors">Number of Floors</label><input type="number" id="numFloors" value="2" /></div>
-                        </div>
-                      </div>
-                      <div id="step-2" class="step">
-                        <h2>Construction Quality</h2><p>Select the desired quality of construction. This determines the per square foot rate.</p>
-                        <div class="quality-grid">
-                          <label class="quality-option"><input type="radio" name="constructionQuality" value="basic" class="sr-only" checked /><h3>Basic Quality</h3><p>Approx. ₹1,600 / sq.ft.</p></label>
-                          <label class="quality-option"><input type="radio" name="constructionQuality" value="mid" class="sr-only" /><h3>Mid-Range Quality</h3><p>Approx. ₹1,900 / sq.ft.</p></label>
-                          <label class="quality-option"><input type="radio" name="constructionQuality" value="premium" class="sr-only" /><h3>Premium Quality</h3><p>Approx. ₹2,400 / sq.ft.</p></label>
-                        </div>
-                      </div>
-                      <div id="step-3" class="step">
-                        <h2>Additional Costs (Optional)</h2><p>Include estimated costs for permissions, architect fees, and utilities if known.</p>
-                        <div class="form-grid">
-                          <div><label for="permissionFees">Permission & Approval Fees (₹)</label><input type="number" id="permissionFees" value="80000" /></div>
-                          <div><label for="architectFees">Architect Fees (%)</label><input type="number" id="architectFees" value="8" /></div>
-                        </div>
-                      </div>
-                      <div class="form-navigation">
-                        <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
-                        <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
-                        <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate Budget</button>
-                      </div>
-                    </form>
-                
+                  </div>
+                  <div id="step-2" class="step">
+                    <h2>Construction Quality</h2><p>Select the desired quality. This determines the per square foot rate.</p>
+                    <div class="quality-grid">
+                      <label class="quality-option"><input type="radio" name="constructionQuality" value="basic" class="sr-only" checked /><h3>Basic</h3><p>Approx. ₹1,600 / sq.ft.</p></label>
+                      <label class="quality-option"><input type="radio" name="constructionQuality" value="mid" class="sr-only" /><h3>Mid-Range</h3><p>Approx. ₹1,900 / sq.ft.</p></label>
+                      <label class="quality-option"><input type="radio" name="constructionQuality" value="premium" class="sr-only" /><h3>Premium</h3><p>Approx. ₹2,400 / sq.ft.</p></label>
+                    </div>
+                  </div>
+                  <div id="step-3" class="step">
+                    <h2>Additional Costs (Optional)</h2><p>Include costs for permissions, architect fees, and utilities.</p>
+                    <div class="form-grid">
+                      <div><label for="permissionFees">Permission & Approval Fees (₹)</label><input type="number" id="permissionFees" value="80000" /></div>
+                      <div><label for="architectFees">Architect Fees (%)</label><input type="number" id="architectFees" value="8" /></div>
+                    </div>
+                  </div>
+                  <div class="form-navigation">
+                    <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
+                    <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+                    <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate</button>
+                  </div>
+                </form>
                 <section id="results" class="hidden"></section>`,
       painting: `
-                <main>
-                     <header style="text-align: center; margin-bottom: 2rem;"><h1>Paint Budget Calculator</h1></header>
-                    <div class="step-navigation">
-                      <button id="step-btn-1" class="step-btn active">1. Areas & Dimensions</button>
-                      <button id="step-btn-2" class="step-btn">2. Paint Quality</button>
-                      <button id="step-btn-3" class="step-btn">3. Labor Rates</button>
+                <div class="calculator-header"><h1>Paint Budget Calculator</h1></div>
+                <form id="paintForm">
+                  <div class="step-navigation">
+                    <button id="step-btn-1" class="step-btn active">1. Areas</button>
+                    <button id="step-btn-2" class="step-btn">2. Quality</button>
+                    <button id="step-btn-3" class="step-btn">3. Labor</button>
+                  </div>
+                  <div id="step-1" class="step active">
+                    <h2>Define Painting Areas</h2><p>Add each area to be painted and provide its dimensions.</p>
+                    <div id="areas-container"></div>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: end; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+                      <div><label for="areaName">Area Name</label><input type="text" id="areaName" placeholder="e.g., Living Room Walls" /></div>
+                      <button type="button" id="addAreaBtn" class="btn btn-primary">Add Area</button>
                     </div>
-                    <form id="paintForm">
-                      <div id="step-1" class="step active">
-                        <h2>Define Painting Areas</h2><p>Add each area to be painted, provide its dimensions, and pick a color.</p>
-                        <div id="areas-container"></div>
-                        <div class="add-area-controls" style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: end; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
-                          <div><label for="areaName">Area Name</label><input type="text" id="areaName" placeholder="e.g., Living Room Walls" /></div>
-                          <button type="button" id="addAreaBtn" class="btn btn-primary">Add Area</button>
-                        </div>
-                      </div>
-                      <div id="step-2" class="step">
-                         <h2>Paint Quality & Coats</h2><p>Select the paint quality. This affects both price and coverage.</p>
-                        <div class="quality-grid">
-                          <label class="quality-option"><input type="radio" name="paintQuality" value="basic" class="sr-only" checked /><h3>Basic Emulsion</h3><p>₹250 / Litre</p></label>
-                          <label class="quality-option"><input type="radio" name="paintQuality" value="premium" class="sr-only" /><h3>Premium Emulsion</h3><p>₹450 / Litre</p></label>
-                          <label class="quality-option"><input type="radio" name="paintQuality" value="luxury" class="sr-only" /><h3>Luxury Emulsion</h3><p>₹700 / Litre</p></label>
-                        </div>
-                        <div class="form-grid" style="margin-top: 1.5rem;">
-                          <div><label for="coats">Number of Coats</label><select id="coats"><option value="1">1 Coat</option><option value="2" selected>2 Coats</option><option value="3">3 Coats</option></select></div>
-                          <div><label for="puttyRequired">Putty Required?</label><select id="puttyRequired"><option value="no">No</option><option value="yes">Yes (2 coats)</option></select></div>
-                        </div>
-                      </div>
-                      <div id="step-3" class="step">
-                        <h2>Labor Costs</h2><p>Enter local labor rates for painting and putty application.</p>
-                        <div class="form-grid">
-                          <div><label for="paintingLabor">Painting Labor (₹ per sq.ft.)</label><input type="number" id="paintingLabor" value="15" /></div>
-                          <div><label for="puttyLabor">Putty Labor (₹ per sq.ft.)</label><input type="number" id="puttyLabor" value="10" /></div>
-                        </div>
-                      </div>
-                      <div class="form-navigation">
-                        <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
-                        <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
-                        <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate Budget</button>
-                      </div>
-                    </form>
-                </main>
+                  </div>
+                  <div id="step-2" class="step">
+                     <h2>Paint Quality & Coats</h2><p>Select the paint quality. This affects both price and coverage.</p>
+                    <div class="quality-grid">
+                      <label class="quality-option"><input type="radio" name="paintQuality" value="basic" class="sr-only" checked /><h3>Basic Emulsion</h3><p>₹250 / Litre</p></label>
+                      <label class="quality-option"><input type="radio" name="paintQuality" value="premium" class="sr-only" /><h3>Premium Emulsion</h3><p>₹450 / Litre</p></label>
+                      <label class="quality-option"><input type="radio" name="paintQuality" value="luxury" class="sr-only" /><h3>Luxury Emulsion</h3><p>₹700 / Litre</p></label>
+                    </div>
+                    <div class="form-grid" style="margin-top: 1.5rem;">
+                      <div><label for="coats">Number of Coats</label><select id="coats"><option value="1">1 Coat</option><option value="2" selected>2 Coats</option><option value="3">3 Coats</option></select></div>
+                      <div><label for="puttyRequired">Putty Required?</label><select id="puttyRequired"><option value="no">No</option><option value="yes">Yes (2 coats)</option></select></div>
+                    </div>
+                  </div>
+                  <div id="step-3" class="step">
+                    <h2>Labor Costs</h2><p>Enter local labor rates for painting and putty application.</p>
+                    <div class="form-grid">
+                      <div><label for="paintingLabor">Painting Labor (₹ per sq.ft.)</label><input type="number" id="paintingLabor" value="15" /></div>
+                      <div><label for="puttyLabor">Putty Labor (₹ per sq.ft.)</label><input type="number" id="puttyLabor" value="10" /></div>
+                    </div>
+                  </div>
+                  <div class="form-navigation">
+                    <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
+                    <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+                    <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate</button>
+                  </div>
+                </form>
                 <section id="results" class="hidden"></section>`,
       electrical: `
-                 <main>
-                    <header style="text-align: center; margin-bottom: 2rem;">
-                        <h1>Electrical Budget Calculator</h1>
-                        <p>Estimate the complete electrical wiring cost for your new Indian home.</p>
-                    </header>
-                    <div class="step-navigation">
-                      <button id="step-btn-1" class="step-btn active">1. Basics</button>
-                      <button id="step-btn-2" class="step-btn">2. Rooms</button>
-                      <button id="step-btn-3" class="step-btn">3. Quality</button>
-                      <button id="step-btn-4" class="step-btn">4. Labor</button>
+                 <div class="calculator-header">
+                    <h1>Electrical Budget Calculator</h1>
+                    <p>Estimate the complete electrical wiring cost for your new Indian home.</p>
+                 </div>
+                <form id="electricalForm">
+                  <div class="step-navigation">
+                    <button id="step-btn-1" class="step-btn active">1. Basics</button>
+                    <button id="step-btn-2" class="step-btn">2. Rooms</button>
+                    <button id="step-btn-3" class="step-btn">3. Quality</button>
+                    <button id="step-btn-4" class="step-btn">4. Labor</button>
+                  </div>
+                  <div id="step-1" class="step active">
+                    <h2>Project Details</h2>
+                    <div class="form-grid">
+                      <div><label for="houseArea">Total Built-up Area (sq.ft.)</label><input type="number" id="houseArea" placeholder="e.g., 1200" required /></div>
+                      <div><label for="floors">Number of Floors</label><input type="number" id="floors" placeholder="e.g., 2" value="1" required /></div>
                     </div>
-                    <form id="electricalForm">
-                      <div id="step-1" class="step active">
-                        <h2>Project Details</h2>
-                        <div class="form-grid">
-                          <div><label for="houseArea">Total Built-up Area (sq.ft.)</label><input type="number" id="houseArea" placeholder="e.g., 1200" required /></div>
-                          <div><label for="floors">Number of Floors</label><input type="number" id="floors" placeholder="e.g., 2" value="1" required /></div>
-                        </div>
-                      </div>
-                      <div id="step-2" class="step">
-                        <h2>Room & Point Configuration</h2><p>Add each room and specify the number of electrical points. We've added some common defaults.</p>
-                        <div id="room-container"></div>
-                        <div class="add-room-controls" style="display: flex; align-items: center; gap: 1rem;">
-                          <select id="roomType" style="flex-grow: 1;"><option value="Bedroom">Bedroom</option><option value="Living Room">Living Room / Hall</option><option value="Kitchen">Kitchen</option><option value="Bathroom">Bathroom</option><option value="Balcony">Balcony / Utility</option><option value="Staircase">Staircase / Passage</option></select>
-                          <button type="button" id="addRoomBtn" class="btn btn-primary">Add Room</button>
-                        </div>
-                      </div>
-                      <div id="step-3" class="step">
-                        <h2>Material Quality</h2><p>Choose the quality of materials. This significantly impacts the overall cost.</p>
-                        <div class="quality-grid">
-                          <label class="quality-option"><input type="radio" name="brandPreference" value="economy" class="sr-only" checked /><h3>Economy</h3><p>Basic, functional materials. (e.g., Anchor Roma, Local Wires)</p></label>
-                          <label class="quality-option"><input type="radio" name="brandPreference" value="mid" class="sr-only" /><h3>Mid-Range</h3><p>Good quality and durability. (e.g., Havells, Polycab)</p></label>
-                          <label class="quality-option"><input type="radio" name="brandPreference" value="premium" class="sr-only" /><h3>Premium</h3><p>High-end, modular, designer. (e.g., Legrand, Schneider)</p></label>
-                        </div>
-                      </div>
-                      <div id="step-4" class="step">
-                        <h2>Labor Cost Estimation</h2><p>Labor costs vary by city and contractor. Enter the rates prevalent in your area.</p>
-                        <div class="form-grid">
-                          <div><label for="laborPerPoint">Labor Rate per Point (₹)</label><input type="number" id="laborPerPoint" placeholder="e.g., 450" value="450" /></div>
-                          <div><label for="mainPanelLabor">Main Panel & Earthing Labor (₹)</label><input type="number" id="mainPanelLabor" placeholder="e.g., 5000" value="5000" /></div>
-                        </div>
-                      </div>
-                      <div class="form-navigation">
-                        <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
-                        <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
-                        <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate Budget</button>
-                      </div>
-                    </form>
-                </main>
+                  </div>
+                  <div id="step-2" class="step">
+                    <h2>Room & Point Configuration</h2><p>Add each room and specify the number of electrical points.</p>
+                    <div id="room-container"></div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-top:1rem; border-top:1px solid var(--border-color); padding-top:1rem;">
+                      <select id="roomType" style="flex-grow: 1;"><option value="Bedroom">Bedroom</option><option value="Living Room">Living Room / Hall</option><option value="Kitchen">Kitchen</option><option value="Bathroom">Bathroom</option><option value="Balcony">Balcony / Utility</option><option value="Staircase">Staircase / Passage</option></select>
+                      <button type="button" id="addRoomBtn" class="btn btn-primary">Add Room</button>
+                    </div>
+                  </div>
+                  <div id="step-3" class="step">
+                    <h2>Material Quality</h2><p>Choose the quality of materials.</p>
+                    <div class="quality-grid">
+                      <label class="quality-option"><input type="radio" name="brandPreference" value="economy" class="sr-only" checked /><h3>Economy</h3><p>e.g., Anchor Roma</p></label>
+                      <label class="quality-option"><input type="radio" name="brandPreference" value="mid" class="sr-only" /><h3>Mid-Range</h3><p>e.g., Havells, Polycab</p></label>
+                      <label class="quality-option"><input type="radio" name="brandPreference" value="premium" class="sr-only" /><h3>Premium</h3><p>e.g., Legrand, Schneider</p></label>
+                    </div>
+                  </div>
+                  <div id="step-4" class="step">
+                    <h2>Labor Cost Estimation</h2><p>Enter the labor rates prevalent in your area.</p>
+                    <div class="form-grid">
+                      <div><label for="laborPerPoint">Labor Rate per Point (₹)</label><input type="number" id="laborPerPoint" value="450" /></div>
+                      <div><label for="mainPanelLabor">Main Panel & Earthing Labor (₹)</label><input type="number" id="mainPanelLabor" value="5000" /></div>
+                    </div>
+                  </div>
+                  <div class="form-navigation">
+                    <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
+                    <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+                    <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate</button>
+                  </div>
+                </form>
                 <section id="results" class="hidden"></section>
             `,
       plumbing: `
-                <main>
-                    <header style="text-align: center; margin-bottom: 2rem;">
-                        <h1>Plumbing Budget Calculator</h1>
-                        <p>Estimate the complete plumbing and sanitary cost for your new Indian home.</p>
-                    </header>
+                <div class="calculator-header">
+                    <h1>Plumbing Budget Calculator</h1>
+                    <p>Estimate the complete plumbing and sanitary cost for your new Indian home.</p>
+                </div>
+                <form id="plumbingForm">
                     <div class="step-navigation">
-                        <button id="step-btn-1" class="step-btn active">1. Bathrooms & Kitchens</button>
-                        <button id="step-btn-2" class="step-btn">2. Materials & Quality</button>
-                        <button id="step-btn-3" class="step-btn">3. Labor Rates</button>
+                        <button id="step-btn-1" class="step-btn active">1. Fixtures</button>
+                        <button id="step-btn-2" class="step-btn">2. Quality</button>
+                        <button id="step-btn-3" class="step-btn">3. Labor</button>
                     </div>
-                    <form id="plumbingForm">
-                        <div id="step-1" class="step active">
-                            <h2>Define Fixture Points</h2>
-                            <p>Add each bathroom and kitchen, and specify the number of fixture points in each.</p>
-                            <div id="fixture-container"></div>
-                            <div class="add-fixture-controls" style="display: flex; gap: 1rem; align-items: end; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
-                                <button type="button" id="addBathroomBtn" class="btn btn-primary">Add Bathroom</button>
-                                <button type="button" id="addKitchenBtn" class="btn btn-primary">Add Kitchen</button>
-                            </div>
+                    <div id="step-1" class="step active">
+                        <h2>Define Fixture Points</h2>
+                        <p>Add each bathroom and kitchen, and specify the number of fixture points in each.</p>
+                        <div id="fixture-container"></div>
+                        <div style="display: flex; gap: 1rem; align-items: end; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                            <button type="button" id="addBathroomBtn" class="btn btn-primary">Add Bathroom</button>
+                            <button type="button" id="addKitchenBtn" class="btn btn-primary">Add Kitchen</button>
                         </div>
-                        <div id="step-2" class="step">
-                            <h2>Pipes & Fixture Quality</h2>
-                            <p>Choose the quality of pipes and sanitary ware. This is a major cost factor.</p>
-                            <div class="quality-grid">
-                                <label class="quality-option"><input type="radio" name="materialQuality" value="economy" class="sr-only" checked /><h3>Economy</h3><p>Standard PVC/CPVC, Basic Fittings</p></label>
-                                <label class="quality-option"><input type="radio" name="materialQuality" value="mid" class="sr-only" /><h3>Mid-Range</h3><p>Branded CPVC (Ashirvad), Hindware/Cera</p></label>
-                                <label class="quality-option"><input type="radio" name="materialQuality" value="premium" class="sr-only" /><h3>Premium</h3><p>Premium Pipes (Astral), Jaquar/Kohler</p></label>
-                            </div>
-                            <div class="form-grid" style="margin-top: 1.5rem">
-                                <div><label for="houseArea">Total Built-up Area (for main lines)</label><input type="number" id="houseArea" placeholder="e.g., 1200 sq.ft." /></div>
-                            </div>
+                    </div>
+                    <div id="step-2" class="step">
+                        <h2>Pipes & Fixture Quality</h2>
+                        <p>Choose the quality of pipes and sanitary ware. This is a major cost factor.</p>
+                        <div class="quality-grid">
+                            <label class="quality-option"><input type="radio" name="materialQuality" value="economy" class="sr-only" checked /><h3>Economy</h3><p>Standard PVC/CPVC, Basic Fittings</p></label>
+                            <label class="quality-option"><input type="radio" name="materialQuality" value="mid" class="sr-only" /><h3>Mid-Range</h3><p>Branded CPVC (Ashirvad), Hindware/Cera</p></label>
+                            <label class="quality-option"><input type="radio" name="materialQuality" value="premium" class="sr-only" /><h3>Premium</h3><p>Premium Pipes (Astral), Jaquar/Kohler</p></label>
                         </div>
-                        <div id="step-3" class="step">
-                            <h2>Labor Cost Estimation</h2>
-                            <p>Costs vary by city. Enter the rates for your area.</p>
-                            <div class="form-grid">
-                                <div><label for="laborPerPoint">Labor Rate per Fixture Point (₹)</label><input type="number" id="laborPerPoint" value="1500" /></div>
-                                <div><label for="mainlineLabor">Main Line & Drainage Labor (Lumpsum ₹)</label><input type="number" id="mainlineLabor" value="15000" /></div>
-                            </div>
+                        <div class="form-grid" style="margin-top: 1.5rem">
+                            <div><label for="houseArea">Total Built-up Area (for main lines)</label><input type="number" id="houseArea" placeholder="e.g., 1200 sq.ft." /></div>
                         </div>
-                        <div class="form-navigation">
-                            <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
-                            <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
-                            <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate Budget</button>
+                    </div>
+                    <div id="step-3" class="step">
+                        <h2>Labor Cost Estimation</h2>
+                        <p>Costs vary by city. Enter the rates for your area.</p>
+                        <div class="form-grid">
+                            <div><label for="laborPerPoint">Labor Rate per Fixture Point (₹)</label><input type="number" id="laborPerPoint" value="1500" /></div>
+                            <div><label for="mainlineLabor">Main Line & Drainage Labor (Lumpsum ₹)</label><input type="number" id="mainlineLabor" value="15000" /></div>
                         </div>
-                    </form>
-                </main>
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
+                        <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+                        <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate</button>
+                    </div>
+                </form>
                 <section id="results" class="hidden"></section>
             `,
       flooring: `
-                <main>
-                    <header style="text-align: center; margin-bottom: 2rem;">
-                        <h1>Floor & Wall Tile Budget Calculator</h1>
-                        <p>Estimate the complete tiling cost for your new Indian home.</p>
-                    </header>
-                     <div class="step-navigation">
-                        <button id="step-btn-1" class="step-btn active">1. Areas & Dimensions</button>
-                        <button id="step-btn-2" class="step-btn">2. Materials & Quality</button>
-                        <button id="step-btn-3" class="step-btn">3. Labor Rates</button>
+                <div class="calculator-header">
+                    <h1>Floor & Wall Tile Budget Calculator</h1>
+                    <p>Estimate the complete tiling cost for your new Indian home.</p>
+                </div>
+                <form id="tileForm">
+                    <div class="step-navigation">
+                        <button id="step-btn-1" class="step-btn active">1. Areas</button>
+                        <button id="step-btn-2" class="step-btn">2. Materials</button>
+                        <button id="step-btn-3" class="step-btn">3. Labor</button>
                     </div>
-                    <form id="tileForm">
-                        <div id="step-1" class="step active">
-                            <h2>Define Areas to be Tiled</h2>
-                            <p>Add each area (floor or wall), and provide its dimensions.</p>
-                            <div id="area-container"></div>
-                            <div class="add-area-controls" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: end; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
-                                <div><label for="areaName">Area Name</label><input type="text" id="areaName" placeholder="e.g., Living Room Floor" /></div>
-                                <button type="button" id="addAreaBtn" class="btn btn-primary">Add Area</button>
-                            </div>
+                    <div id="step-1" class="step active">
+                        <h2>Define Areas to be Tiled</h2>
+                        <p>Add each area (floor or wall), and provide its dimensions.</p>
+                        <div id="area-container"></div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: end; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                            <div><label for="areaName">Area Name</label><input type="text" id="areaName" placeholder="e.g., Living Room Floor" /></div>
+                            <button type="button" id="addAreaBtn" class="btn btn-primary">Add Area</button>
                         </div>
-                        <div id="step-2" class="step">
-                            <h2>Tile & Material Quality</h2>
-                            <p>Choose the quality of tiles and other materials. This significantly impacts the cost.</p>
-                            <div class="quality-grid">
-                                <label class="quality-option"><input type="radio" name="tileQuality" value="economy" class="sr-only" checked /><h3>Economy</h3><p>Basic Ceramic Tiles (Approx. ₹40/sq.ft)</p></label>
-                                <label class="quality-option"><input type="radio" name="tileQuality" value="mid" class="sr-only" /><h3>Mid-Range</h3><p>Good Vitrified (GVT) (Approx. ₹75/sq.ft)</p></label>
-                                <label class="quality-option"><input type="radio" name="tileQuality" value="premium" class="sr-only" /><h3>Premium</h3><p>Designer / PGVT Tiles (Approx. ₹120/sq.ft)</p></label>
-                            </div>
-                            <div class="form-grid" style="margin-top: 1.5rem">
-                                <div><label for="wastage">Tile Wastage (%)</label><input type="number" id="wastage" value="10" /></div>
-                            </div>
+                    </div>
+                    <div id="step-2" class="step">
+                        <h2>Tile & Material Quality</h2>
+                        <p>Choose the quality of tiles and other materials.</p>
+                        <div class="quality-grid">
+                            <label class="quality-option"><input type="radio" name="tileQuality" value="economy" class="sr-only" checked /><h3>Economy</h3><p>Basic Ceramic (Approx. ₹40/sq.ft)</p></label>
+                            <label class="quality-option"><input type="radio" name="tileQuality" value="mid" class="sr-only" /><h3>Mid-Range</h3><p>Vitrified (GVT) (Approx. ₹75/sq.ft)</p></label>
+                            <label class="quality-option"><input type="radio" name="tileQuality" value="premium" class="sr-only" /><h3>Premium</h3><p>Designer / PGVT (Approx. ₹120/sq.ft)</p></label>
                         </div>
-                        <div id="step-3" class="step">
-                            <h2>Labor Cost Estimation</h2>
-                            <p>Costs vary by city. Enter the rates for your area.</p>
-                            <div class="form-grid">
-                                <div><label for="tilingLabor">Tiling Labor (₹ per sq.ft.)</label><input type="number" id="tilingLabor" value="25" /></div>
-                                <div><label for="skirtingLabor">Skirting Labor (₹ per running ft.)</label><input type="number" id="skirtingLabor" value="20" /></div>
-                                <div><label for="hackingLabor">Old Tile Removal / Hacking (₹ per sq.ft.)</label><input type="number" id="hackingLabor" value="10" placeholder="Enter 0 if not applicable"/></div>
-                            </div>
+                        <div class="form-grid" style="margin-top: 1.5rem">
+                            <div><label for="wastage">Tile Wastage (%)</label><input type="number" id="wastage" value="10" /></div>
                         </div>
-                        <div class="form-navigation">
-                            <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
-                            <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
-                            <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate Budget</button>
+                    </div>
+                    <div id="step-3" class="step">
+                        <h2>Labor Cost Estimation</h2>
+                        <p>Costs vary by city. Enter the rates for your area.</p>
+                        <div class="form-grid">
+                            <div><label for="tilingLabor">Tiling Labor (₹ per sq.ft.)</label><input type="number" id="tilingLabor" value="25" /></div>
+                            <div><label for="skirtingLabor">Skirting Labor (₹ per running ft.)</label><input type="number" id="skirtingLabor" value="20" /></div>
+                            <div><label for="hackingLabor">Old Tile Removal (₹ per sq.ft.)</label><input type="number" id="hackingLabor" value="10" placeholder="0 if not applicable"/></div>
                         </div>
-                    </form>
-                </main>
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
+                        <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+                        <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate</button>
+                    </div>
+                </form>
                 <section id="results" class="hidden"></section>
             `,
       doorsAndWindows: `
-                <main>
-                    <header style="text-align: center; margin-bottom: 2rem;"><h1>Doors & Windows Budget Calculator</h1></header>
+                <div class="calculator-header"><h1>Doors & Windows Budget Calculator</h1></div>
+                <form id="dwForm">
                     <div class="step-navigation">
-                        <button id="step-btn-1" class="step-btn active">1. Openings & Dimensions</button>
-                        <button id="step-btn-2" class="step-btn">2. Materials & Quality</button>
-                        <button id="step-btn-3" class="step-btn">3. Labor Rates</button>
+                        <button id="step-btn-1" class="step-btn active">1. Openings</button>
+                        <button id="step-btn-2" class="step-btn">2. Materials</button>
+                        <button id="step-btn-3" class="step-btn">3. Labor</button>
                     </div>
-                    <form id="dwForm">
-                        <div id="step-1" class="step active">
-                            <h2>Define Openings & Visualize</h2>
-                            <div class="openings-layout" style="display: grid; grid-template-columns: 1fr; gap: 2rem; @media (min-width: 768px) { grid-template-columns: 1fr 1fr; }">
-                                <div>
-                                    <p>Add each door and window and provide its dimensions in feet.</p>
-                                    <div id="openings-container"></div>
-                                    <div class="add-opening-controls" style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: end; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
-                                        <div><label for="openingName">Opening Name</label><input type="text" id="openingName" placeholder="e.g., Main Door" /></div>
-                                        <button type="button" id="addOpeningBtn" class="btn btn-primary">Add Opening</button>
-                                    </div>
-                                </div>
-                                <div class="visualizer-container" style="background-color: var(--brand-color-light); border-radius: var(--border-radius-lg); padding: 1rem; display: flex; align-items: center; justify-content: center; min-height: 300px;">
-                                    <canvas id="visualizerCanvas" width="300" height="300"></canvas>
+                    <div id="step-1" class="step active">
+                        <h2>Define Openings & Visualize</h2>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; @media (min-width: 768px) { grid-template-columns: 1fr 1fr; }">
+                            <div>
+                                <p>Add each door and window and provide its dimensions in feet.</p>
+                                <div id="openings-container"></div>
+                                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: end; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: 1.5rem;">
+                                    <div><label for="openingName">Opening Name</label><input type="text" id="openingName" placeholder="e.g., Main Door" /></div>
+                                    <button type="button" id="addOpeningBtn" class="btn btn-primary">Add Opening</button>
                                 </div>
                             </div>
-                        </div>
-                        <div id="step-2" class="step">
-                             <h2>Frame & Shutter Materials</h2><p>Select the material type. Costs are indicative per square foot.</p>
-                            <div class="quality-grid">
-                                <label class="quality-option"><input type="radio" name="materialQuality" value="teak" class="sr-only" checked /><h3>Teak Wood</h3><p>₹1800 - ₹2500 / sq.ft.</p></label>
-                                <label class="quality-option"><input type="radio" name="materialQuality" value="wood" class="sr-only" /><h3>Other Hard Wood</h3><p>₹1200 - ₹1800 / sq.ft.</p></label>
-                                <label class="quality-option"><input type="radio" name="materialQuality" value="upvc" class="sr-only" /><h3>UPVC</h3><p>₹600 - ₹1200 / sq.ft.</p></label>
-                                <label class="quality-option"><input type="radio" name="materialQuality" value="aluminium" class="sr-only" /><h3>Aluminium</h3><p>₹500 - ₹900 / sq.ft.</p></label>
+                            <div style="background-color: var(--brand-color-light); border-radius: var(--border-radius-lg); padding: 1rem; display: flex; align-items: center; justify-content: center; min-height: 300px;">
+                                <canvas id="visualizerCanvas" width="300" height="300"></canvas>
                             </div>
                         </div>
-                        <div id="step-3" class="step">
-                            <h2>Labor & Installation Costs</h2><p>Enter local labor rates for installation and frame fitting.</p>
-                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                                <div><label for="installationLabor">Installation Labor (₹ per sq.ft.)</label><input type="number" id="installationLabor" value="150" /></div>
-                                <div><label for="frameLabor">Granite Frame Labor (₹ per running ft.)</label><input type="number" id="frameLabor" value="120" placeholder="0 if not applicable"/></div>
-                            </div>
+                    </div>
+                    <div id="step-2" class="step">
+                         <h2>Frame & Shutter Materials</h2><p>Select the material type. Costs are indicative per square foot.</p>
+                        <div class="quality-grid">
+                            <label class="quality-option"><input type="radio" name="materialQuality" value="teak" class="sr-only" checked /><h3>Teak Wood</h3><p>₹1800 - ₹2500 / sq.ft.</p></label>
+                            <label class="quality-option"><input type="radio" name="materialQuality" value="wood" class="sr-only" /><h3>Other Hard Wood</h3><p>₹1200 - ₹1800 / sq.ft.</p></label>
+                            <label class="quality-option"><input type="radio" name="materialQuality" value="upvc" class="sr-only" /><h3>UPVC</h3><p>₹600 - ₹1200 / sq.ft.</p></label>
+                            <label class="quality-option"><input type="radio" name="materialQuality" value="aluminium" class="sr-only" /><h3>Aluminium</h3><p>₹500 - ₹900 / sq.ft.</p></label>
                         </div>
-                        <div class="form-navigation">
-                            <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
-                            <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
-                            <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate Budget</button>
+                    </div>
+                    <div id="step-3" class="step">
+                        <h2>Labor & Installation Costs</h2><p>Enter local labor rates for installation and frame fitting.</p>
+                         <div class="form-grid">
+                            <div><label for="installationLabor">Installation Labor (₹ per sq.ft.)</label><input type="number" id="installationLabor" value="150" /></div>
+                            <div><label for="frameLabor">Granite Frame Labor (₹ per running ft.)</label><input type="number" id="frameLabor" value="120" placeholder="0 if not applicable"/></div>
                         </div>
-                    </form>
-                </main>
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
+                        <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+                        <button type="submit" id="submitBtn" class="btn btn-submit hidden">Calculate</button>
+                    </div>
+                </form>
                 <section id="results" class="hidden"></section>
             `,
     },
@@ -2530,12 +2527,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } else {
         fetch(`/${pageName}.html`)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Page not found");
-            }
-            return response.text();
-          })
+          .then((response) =>
+            response.ok ? response.text() : Promise.reject("Page not found")
+          )
           .then((html) => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, "text/html");
@@ -2547,27 +2541,19 @@ document.addEventListener("DOMContentLoaded", () => {
             appContainer.innerHTML = `<p>Error: Page not found.</p>`;
           });
       }
+      // Close any open panels on navigation
+      this.closeAllPanels();
     },
     updateNav: function (pageName) {
-      mainNav.querySelectorAll(".nav-btn").forEach((btn) => {
-        const icon = btn.querySelector(".material-symbols-outlined");
-        if (btn.dataset.page === pageName) {
-          btn.classList.add("text-primary", "dark:text-primary");
-          btn.classList.remove("text-muted-light", "dark:text-muted-dark");
-          icon.style.fontVariationSettings = "'FILL' 1";
-        } else {
-          btn.classList.remove("text-primary", "dark:text-primary");
-          btn.classList.add("text-muted-light", "dark:text-muted-dark");
-          icon.style.fontVariationSettings = "'FILL' 0";
-        }
+      document.querySelectorAll(".nav-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.page === pageName);
       });
     },
     addCalculatorLinkListeners: function () {
       document.querySelectorAll(".calculator-link").forEach((link) => {
         link.addEventListener("click", (e) => {
           e.preventDefault();
-          const page = e.currentTarget.dataset.page;
-          this.loadView(page);
+          this.loadView(e.currentTarget.dataset.page);
         });
       });
     },
@@ -2590,5 +2576,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Initial load
   app.loadView("home");
 });

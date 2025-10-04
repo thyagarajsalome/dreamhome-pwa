@@ -4,11 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dreamhome Calculator</title>
-
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#359EFF" />
-    <link rel="apple-touch-icon" href="/images/icon-192.png" />
-
+    <link rel="apple-touch-icon" href="/images/icon-192x192.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,67 +19,101 @@
     />
     <link rel="stylesheet" href="/css/style.css" />
   </head>
-  <body
-    class="font-display bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark"
-  >
-    <div class="flex flex-col min-h-screen">
-      <header
-        class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-border-light dark:border-border-dark"
-      >
-        <div class="container mx-auto px-4">
-          <div class="flex items-center justify-between h-16">
-            <h1 class="text-lg font-semibold mx-auto">Dreamhome Calculator</h1>
+  <body>
+    <div id="app-overlay" class="app-overlay"></div>
+
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Menu</h2>
+        <button id="close-sidebar-btn" class="icon-btn">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-btn" href="#" data-page="home">
+          <span class="material-symbols-outlined">home</span>
+          <span class="nav-text">Home</span>
+        </a>
+        <a class="nav-btn" href="#" data-page="about">
+          <span class="material-symbols-outlined">info</span>
+          <span class="nav-text">About</span>
+        </a>
+        <a class="nav-btn" href="#" data-page="faq">
+          <span class="material-symbols-outlined">quiz</span>
+          <span class="nav-text">FAQ</span>
+        </a>
+        <a class="nav-btn" href="#" data-page="privacy">
+          <span class="material-symbols-outlined">privacy_tip</span>
+          <span class="nav-text">Privacy</span>
+        </a>
+        <a class="nav-btn" href="#" data-page="terms">
+          <span class="material-symbols-outlined">gavel</span>
+          <span class="nav-text">Terms</span>
+        </a>
+      </nav>
+    </aside>
+
+    <aside id="settings-panel" class="settings-panel">
+      <div class="settings-header">
+        <h2 class="settings-title">Settings</h2>
+        <button id="close-settings-btn" class="icon-btn">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="settings-content">
+        <div class="setting-item">
+          <label for="theme-switcher">Theme</label>
+          <div class="theme-switcher">
+            <button class="theme-btn" data-theme="light">
+              <span class="material-symbols-outlined">light_mode</span> Light
+            </button>
+            <button class="theme-btn" data-theme="dark">
+              <span class="material-symbols-outlined">dark_mode</span> Dark
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="app-layout">
+      <header class="app-header">
+        <div class="container">
+          <div class="header-content">
+            <button id="menu-btn">
+              <span class="material-symbols-outlined">menu</span>
+            </button>
+            <h1 class="header-title">Dreamhome Calculator</h1>
+            <button id="settings-btn" class="icon-btn">
+              <span class="material-symbols-outlined">settings</span>
+            </button>
           </div>
         </div>
       </header>
-      <main
-        id="app-container"
-        class="flex-grow container mx-auto px-4 py-6"
-      ></main>
-      <footer
-        class="sticky bottom-0 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-sm border-t border-border-light dark:border-border-dark"
-      >
-        <div class="container mx-auto px-4">
-          <div class="flex justify-around h-20">
-            <a
-              class="nav-btn flex flex-col items-center justify-center text-primary dark:text-primary transition-colors duration-200"
-              href="#"
-              data-page="home"
-            >
+
+      <main id="app-container" class="container"></main>
+
+      <footer class="app-footer">
+        <div class="container">
+          <div class="footer-nav">
+            <a class="nav-btn" href="#" data-page="home">
               <span class="material-symbols-outlined">home</span>
-              <span class="text-xs font-medium">Home</span>
+              <span class="nav-text">Home</span>
             </a>
-            <a
-              class="nav-btn flex flex-col items-center justify-center text-muted-light dark:text-muted-dark hover:text-primary dark:hover:text-primary transition-colors duration-200"
-              href="#"
-              data-page="about"
-            >
+            <a class="nav-btn" href="#" data-page="about">
               <span class="material-symbols-outlined">info</span>
-              <span class="text-xs font-medium">About</span>
+              <span class="nav-text">About</span>
             </a>
-            <a
-              class="nav-btn flex flex-col items-center justify-center text-muted-light dark:text-muted-dark hover:text-primary dark:hover:text-primary transition-colors duration-200"
-              href="#"
-              data-page="faq"
-            >
+            <a class="nav-btn" href="#" data-page="faq">
               <span class="material-symbols-outlined">quiz</span>
-              <span class="text-xs font-medium">FAQ</span>
+              <span class="nav-text">FAQ</span>
             </a>
-            <a
-              class="nav-btn flex flex-col items-center justify-center text-muted-light dark:text-muted-dark hover:text-primary dark:hover:text-primary transition-colors duration-200"
-              href="#"
-              data-page="privacy"
-            >
+            <a class="nav-btn" href="#" data-page="privacy">
               <span class="material-symbols-outlined">privacy_tip</span>
-              <span class="text-xs font-medium">Privacy</span>
+              <span class="nav-text">Privacy</span>
             </a>
-            <a
-              class="nav-btn flex flex-col items-center justify-center text-muted-light dark:text-muted-dark hover:text-primary dark:hover:text-primary transition-colors duration-200"
-              href="#"
-              data-page="terms"
-            >
+            <a class="nav-btn" href="#" data-page="terms">
               <span class="material-symbols-outlined">gavel</span>
-              <span class="text-xs font-medium">Terms</span>
+              <span class="nav-text">Terms</span>
             </a>
           </div>
         </div>
