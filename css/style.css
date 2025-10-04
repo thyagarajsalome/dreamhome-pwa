@@ -60,6 +60,10 @@ body {
   padding: 0 1rem;
 }
 
+.static-page {
+  padding: 1.5rem 0;
+}
+
 /* --- APP LAYOUT, HEADER, FOOTER (Same as before) --- */
 .app-layout {
   display: flex;
