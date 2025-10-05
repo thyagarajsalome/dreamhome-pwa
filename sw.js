@@ -1,5 +1,5 @@
 // thyagarajsalome/dreamhome-pwa/dreamhome-pwa-e228f9cbd28c01dc658af560316564e882e1d39f/sw.js
-const CACHE_NAME = "dreamhome-calculator-cache-v2"; // Incremented version
+const CACHE_NAME = "dreamhome-calculator-cache-v3"; // Incremented version
 const urlsToCache = [
   "/",
   "/index.html",

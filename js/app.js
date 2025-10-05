@@ -1,5 +1,48 @@
 document.addEventListener("DOMContentLoaded", () => {
   const appContainer = document.getElementById("app-container");
+  const installBtn = document.getElementById("installBtn");
+  const themeSwitcher = document.getElementById("theme-switcher");
+  let deferredPrompt;
+
+  // --- PWA Installation Logic ---
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = "flex";
+  });
+
+  installBtn.addEventListener("click", async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to the install prompt: ${outcome}`);
+      deferredPrompt = null;
+      installBtn.style.display = "none";
+    }
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredPrompt = null;
+    installBtn.style.display = "none";
+    console.log("PWA was installed");
+  });
+
+  // --- Theme Switcher Logic ---
+  const currentTheme = localStorage.getItem("theme");
+  if (currentTheme) {
+    document.documentElement.setAttribute("data-theme", currentTheme);
+  }
+
+  themeSwitcher.addEventListener("click", () => {
+    let currentTheme = document.documentElement.getAttribute("data-theme");
+    if (currentTheme === "dark") {
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.removeItem("theme");
+    } else {
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+    }
+  });
 
   const app = {
     templates: {
