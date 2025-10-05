@@ -1,9 +1,4 @@
-# dreamhome-pwa
-Of course\! Here is a comprehensive README.md file for your "Dreamhome PWA" GitHub repository.
 
------
-
-# Dreamhome PWA Calculator
 
 **Dreamhome Calculator** is a Progressive Web App (PWA) designed to simplify home construction budgeting. It provides a suite of calculators to help homeowners, contractors, and dreamers get a clear and transparent view of potential costs before starting a building project.
 
