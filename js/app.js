@@ -26,7 +26,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const app = {
     templates: {
       home: `
-               
+              <div class="hero-section">
+        <p>Your Dream Home, Budgeted Perfectly.</p>
+        <p>
+          <span>Stop guessing, start planning</span>. "Dream Home Calculator"
+          provides transparent, detailed cost estimates for every stage of your
+          home construction project.
+        </p>
+      </div>
              
                 <div class="calculator-grid">
                     <a class="category-card calculator-link" href="#" data-page="houseConstruction">
